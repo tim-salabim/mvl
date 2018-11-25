@@ -1,0 +1,9 @@
+convert logo.jpg  -font Arial -pointsize 20 \
+          -draw "gravity south \
+                 fill black  text 0,12 'Copyright' \
+                 fill white  text 1,11 'Copyright' " \
+          wmark_text_drawn.jpg
+
+convert -size 320x100 xc:black -font Candice -pointsize 72 \
+           -fill white   -annotate +25+65 'Anthony' \
+           -shade 140x45  font_beveled.jpg

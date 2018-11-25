@@ -69,6 +69,66 @@ system('gdalwarp -t_srs "+wktext +proj=qsc +units=m +ellps=WGS84  +lat_0=90 +lon
 system('gdalwarp -t_srs "+wktext +proj=qsc +units=m +ellps=WGS84  +lat_0=-90 +lon_0=0" -wo SOURCE_EXTRA=100 -wo SAMPLE_GRID=YES -te -6378137 -6378137 6378137 6378137 world_imagery/world.png world_imagery/sides/bottom.tiff')
 
 
+## make sure all sides have same dimensions
+library(magick)
+
+fls = list.files("world_imagery/sides", full.names = TRUE)
+
+img_lst = lapply(fls, image_read)
+info = do.call(rbind, lapply(img_lst, image_info))
+
+width = min(info$width)
+height = min(info$height)
+
+xy = min(c(width, height))
+
+# resize all images to min dim
+geom = paste0(xy, "x", xy, "!")
+
+img_lst_smll = lapply(img_lst, image_resize, geometry = geom)
+
+# write resized images to disk
+out_fls = gsub(".tiff", "_smll.tiff", fls)
+lapply(seq(img_lst_smll), function(i) image_write(img_lst_smll[[i]], path = out_fls[i]))
+
+## add text to left and top
+# using package magick
+left = image_read("world_imagery/sides/left_smll.tiff")
+top = image_read("world_imagery/sides/top_smll.tiff")
+front = image_read("world_imagery/sides/front_smll.tiff")
+
+top = image_annotate(top,
+                     text = "view",
+                     gravity = "northwest",
+                     location = "+0+20",
+                     size = 400,
+                     font = "mono",
+                     strokecolor = "black",
+                     color = "#00ffff")
+
+left = image_annotate(left,
+                      text = "map",
+                      gravity = "west",
+                      location = "+200+360",
+                      degrees = 270,
+                      size = 400,
+                      font = "mono",
+                      color = "#00ffff",
+                      strokecolor = "black")
+
+front = image_annotate(front,
+                       text = "Leaflet | © OpenStreetMap © CartoDB",
+                       gravity = "southwest",
+                       location = "+10+20",
+                       size = 20,
+                       color = "white")
+
+image_write(top, path = "world_imagery/sides/top_smll_txt.tiff")
+image_write(left, path = "world_imagery/sides/left_smll_txt.tiff")
+image_write(front, path = "world_imagery/sides/front_smll_txt.tiff")
+
 ## create box
-system('sudo -kS 3Dbox pan=45 tilt=-45 pef=0 filter=point world_imagery/sides/right.tiff world_imagery/sides/front.tiff world_imagery/sides/top.tiff world_imagery/box.png',
+system('sudo -kS 3Dbox pan=45 tilt=-45 pef=0 filter=point world_imagery/sides/front_smll_txt.tiff world_imagery/sides/left_smll_txt.tiff world_imagery/sides/top_smll_txt.tiff world_imagery/box.png',
        input = rstudioapi::askForPassword("sudo password"))
+
+
