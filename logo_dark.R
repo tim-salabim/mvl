@@ -10,7 +10,7 @@ library(raster)
 library(magick)
 
 ## function to increase space between letters (as "map" is shorter than "view")
-## modiefied from https://stackoverflow.com/questions/18345196/reduce-the-spacing-between-letters-in-the-text-function
+## modified from https://stackoverflow.com/questions/18345196/reduce-the-spacing-between-letters-in-the-text-function
 squishtext <- function(x, y, text, squish=1, direction = "x", ...) {
   if (direction == "x") {
     text <- strsplit(text, '')[[1]]
