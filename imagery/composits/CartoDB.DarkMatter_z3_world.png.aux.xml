@@ -1,0 +1,31 @@
+<PAMDataset>
+  <SRS>PROJCS["unnamed",GEOGCS["unnamed ellipse",DATUM["unknown",SPHEROID["unnamed",6378137,0],EXTENSION["PROJ4_GRIDS","@null"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Mercator_2SP"],PARAMETER["standard_parallel_1",0],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["Meter",1]]</SRS>
+  <GeoTransform> -2.0037508342789248e+07,  1.9567879241005132e+04,  0.0000000000000000e+00,  2.0037508342789121e+07,  0.0000000000000000e+00, -1.9567879241005074e+04</GeoTransform>
+  <Metadata domain="IMAGE_STRUCTURE">
+    <MDI key="INTERLEAVE">PIXEL</MDI>
+  </Metadata>
+  <PAMRasterBand band="1">
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">46</MDI>
+      <MDI key="STATISTICS_MEAN">27.034997027853</MDI>
+      <MDI key="STATISTICS_MINIMUM">2</MDI>
+      <MDI key="STATISTICS_STDDEV">13.962014023237</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="2">
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">46</MDI>
+      <MDI key="STATISTICS_MEAN">27.034997027853</MDI>
+      <MDI key="STATISTICS_MINIMUM">2</MDI>
+      <MDI key="STATISTICS_STDDEV">13.962014023237</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="3">
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">46</MDI>
+      <MDI key="STATISTICS_MEAN">27.034997027853</MDI>
+      <MDI key="STATISTICS_MINIMUM">2</MDI>
+      <MDI key="STATISTICS_STDDEV">13.962014023237</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>
