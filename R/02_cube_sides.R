@@ -119,3 +119,5 @@ walk(.x = composits,
      },
      dir_dstfiles = "imagery/healpix"
 )
+
+
