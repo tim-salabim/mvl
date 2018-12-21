@@ -146,6 +146,7 @@ gif_file = gifski(png_files = png_fls,
 
 # clean up
 unlink(png_fls)
+unlink(list.files("imagery/healpix", full.names = TRUE))
 
 # I can't get it running on Windows...
 # this has to be executed on a Linux machine ...
