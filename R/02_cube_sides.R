@@ -44,7 +44,8 @@ library(purrr)
 # function to compute one side
 gdal_qsc = function(srcfile,
                     dstfile,
-                    side = c("front", "right", "back", "left", "top", "bottom")){
+                    side = c("front", "right", "back", "left", "top", "bottom"),
+                    overwrite = TRUE){
 
   side = match.arg(side)
 
@@ -61,7 +62,8 @@ gdal_qsc = function(srcfile,
   gdalwarp(srcfile = srcfile, dstfile = as.character(dstfile),
            t_srs = as.character(t_srs),
            te = c(-6378137, -6378137, 6378137, 6378137),
-           wo = "SOURCE_EXTRA=1000 SAMPLE_GRID=YES SAMPLE_STEPS=1000"
+           wo = "SOURCE_EXTRA=1000 SAMPLE_GRID=YES SAMPLE_STEPS=1000",
+           overwrite = overwrite
   )
 
 }
@@ -82,7 +84,7 @@ gdal_qsc_all = function(srcfile,
   cat(crayon::bold("creating sides for:"), provider_name, crayon::bold("Output:"), dir_dstfiles, "\n")
 
   walk(.x = sides, .f = function(side, srcfile, dir_dstfiles) {
-    dstfile = glue::glue(dir_dstfiles, "/{side}.png")
+    dstfile = glue::glue(dir_dstfiles, "/{side}.tiff")
     gdal_qsc(srcfile = srcfile, dstfile = dstfile, side = side)
     },
     srcfile = srcfile,
@@ -111,7 +113,7 @@ walk(.x = composits, gdal_qsc_all)
 walk(.x = composits,
      .f = function(x, dir_dstfiles) {
        gdalwarp(srcfile = x,
-                dstfile = as.character(here::here(dir_dstfiles, basename(x))),
+                dstfile = as.character(here::here(dir_dstfiles, gsub("png", "tiff", basename(x)))),
                 t_srs = '+proj=healpix +a=1 +ellps=WGS84 +wktext',
                 te = c(-3.14159265, -1.57079632, 3.14159265, 1.57079632),
                 wo = "SOURCE_EXTRA=1000 SAMPLE_GRID=YES SAMPLE_STEPS=1000"

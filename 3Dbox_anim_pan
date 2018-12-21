@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Provide the input and output names
+# output name must be .gif
+ifile1=imagery/qsc_sides/CartoDB.DarkMatter_z3/front_rs.png
+ifile2=imagery/qsc_sides/Esri.WorldImagery_z3/left_rs.png
+ifile3=imagery/qsc_sides/OpenTopoMap_z3/top_rs.png
+ifile4=imagery/qsc_sides/OpenStreetMap_z3/back_rs.png
+ifile5=imagery/qsc_sides/CartoDB.Positron_z3/right_rs.png
+ifile6=imagery/qsc_sides/OpenStreetMap_z3/bottom_rs.png
+ofile=imagery/3Dbox/box.gif
+
+# provide the frame delay in the gif animation
+delay=10
+
+# set initial angles and angle increment
+tiltvalue=-35
+panvalue=45
+anginc=2
+num=180
+
+# define temp
+tmp1="box_animate_1_$$.miff"
+tmp2="box_animate_2_$$.miff"
+tmp3="box_animate_3_$$.miff"
+tmp4="box_animate_4_$$.miff"
+tmp5="box_animate_5_$$.miff"
+tmp6="box_animate_6_$$.miff"
+trap "rm -f $tmp1 $tmp2 $tmp3 $tmp4 $tmp5 $tmp6; exit 0" 0
+trap "rm -f $tmp1 $tmp2 $tmp3 $tmp4 $tmp5 $tmp6; exit 1" 1 2 3 4 5 6 15
+
+i=0
+while [ $i -lt $num ]
+	do
+	if [ $panvalue -gt 360 ]; then
+		panvalue=`expr $panvalue - 360`
+	fi
+	echo "frame $i; pan=$panvalue; tilt=$tiltvalue"
+	3Dbox pan=$panvalue tilt=$tiltvalue pef=0 filter="lanczos" format="center" $ifile1 $ifile2 $ifile3 $ifile4 $ifile5 $ifile6 $tmp1
+	if [ $i -eq 0 ]
+		then
+		convert $tmp1 -delay $delay $tmp2
+	else
+		convert -delay $delay $tmp2 $tmp1 $tmp2
+	fi
+	panvalue=`expr $panvalue + $anginc`
+	i=`expr $i + 1`
+done
+convert -loop 0 $tmp2 $ofile
