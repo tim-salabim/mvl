@@ -60,19 +60,22 @@ qsc_sides_img_rs %>%
 # 2. fill gaps on north and south pole and add text ----
 ################################################################################
 
+# read images that need to be manipulated
 left = image_read("imagery/qsc_sides/Esri.WorldImagery_z3/left_rs.png")
 top = image_read("imagery/qsc_sides/OpenTopoMap_z3/top_rs.png")
+
 front = image_read("imagery/qsc_sides/CartoDB.DarkMatter_z3/front_rs.png")
+bottom = image_read("imagery/qsc_sides/OSM.nolabel_z3/bottom_rs.png")
 
-xy = image_info(top)$width
-
-# this is currently done manually using paint.net
+# draw "map" text to left tile
 left <- image_draw(left)
 text(x = 100, y = 20, labels = "map",
      adj = c(1, 0.5), font = 2, family = "FreeMono",
      cex = 25, srt = 90, col = "#ffffff88")
 dev.off()
 
+# fill gap on north pole
+xy = image_info(top)$width
 top <- image_draw(top)
 rect(xleft = xy / 2 - 45,
      ybottom = xy / 2 - 45,
@@ -80,25 +83,44 @@ rect(xleft = xy / 2 - 45,
      ytop = xy / 2 + 45,
      col = "#97d2e2",
      border = "transparent")
+
+# add "view" to the top tile
 # text(xy / 2 + 4, 96, adj = c(0.5, 0.5), "view", font = 2, family = "FreeMono",
 #      cex = 25, srt = 0, col = "#4d4d4d")
 text(20, 100, adj = c(0, 0.5), "view", font = 2, family = "FreeMono",
      cex = 25, srt = 0, col = "#00000088")
 dev.off()
 
+# add Copyright notes to front tile
 front = image_annotate(front,
-                       text = "Leaflet | © OpenStreetMap © CartoDB",
+                       text = "Leaflet | ©OpenStreetMap ©OpenTopoMap ©CARTO ©Esri",
                        gravity = "southwest",
                        location = "+10+20",
-                       size = 30,
+                       size = 20,
                        color = "#4d4d4d")
 
+# fill gap on south pole
+xy = image_info(bottom)$width
+bottom <- image_draw(bottom)
+lines(x = c(xy / 2, xy / 2), y = c(500, xy), col = "#b4d0d1", lwd = 2)
+lines(x = c(xy / 2, xy / 2), y = c(xy / 2, 500), col = "#f1eee7", lwd = 2)
+rect(xleft = xy / 2 - 45,
+     ybottom = xy / 2 - 45,
+     xright = xy / 2 + 45,
+     ytop = xy / 2 + 45,
+     col = "#f1eee7", #"#262626",
+     border = "transparent",
+     lwd = 0)
+
+#save manipulated images
 image_write(top, path = "imagery/qsc_sides/OpenTopoMap_z3/top_rs_txt.png")
 image_write(left, path = "imagery/qsc_sides/Esri.WorldImagery_z3/left_rs_txt.png")
 image_write(front, path = "imagery/qsc_sides/CartoDB.DarkMatter_z3/front_rs_txt.png")
+image_write(bottom, path = "imagery/qsc_sides/OSM.nolabel_z3/bottom_rs_txt.png")
+
 
 ################################################################################
-# 4. create 3d box ----
+# 3. create 3d box ----
 ################################################################################
 
 # see here for info on the 3Dbox tool

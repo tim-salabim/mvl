@@ -7,7 +7,7 @@ ifile2=imagery/qsc_sides/Esri.WorldImagery_z3/left_rs.png
 ifile3=imagery/qsc_sides/OpenTopoMap_z3/top_rs.png
 ifile4=imagery/qsc_sides/OpenStreetMap_z3/back_rs.png
 ifile5=imagery/qsc_sides/CartoDB.Positron_z3/right_rs.png
-ifile6=imagery/qsc_sides/OpenStreetMap_z3/bottom_rs.png
+ifile6=imagery/qsc_sides/OSM.nolabels/bottom_rs.png
 ofile=imagery/3Dbox/box.gif
 
 # provide the frame delay in the gif animation
