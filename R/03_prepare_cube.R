@@ -96,8 +96,8 @@ front = image_annotate(front,
                        text = "Leaflet | ©OpenStreetMap ©OpenTopoMap ©CARTO ©Esri",
                        gravity = "southwest",
                        location = "+10+20",
-                       size = 20,
-                       color = "#4d4d4d")
+                       size = 25,
+                       color = "#7e7e7e")
 
 # fill gap on south pole
 xy = image_info(bottom)$width
@@ -111,6 +111,7 @@ rect(xleft = xy / 2 - 45,
      col = "#f1eee7", #"#262626",
      border = "transparent",
      lwd = 0)
+dev.off()
 
 #save manipulated images
 image_write(top, path = "imagery/qsc_sides/OpenTopoMap_z3/top_rs_txt.png")
@@ -134,7 +135,7 @@ infiles = c("imagery/qsc_sides/CartoDB.DarkMatter_z3/front_rs_txt.png",
             "imagery/qsc_sides/OpenTopoMap_z3/top_rs_txt.png",
             "imagery/qsc_sides/OpenStreetMap_z3/back_rs.png",
             "imagery/qsc_sides/CartoDB.Positron_z3/right_rs.png",
-            "imagery/qsc_sides/OpenStreetMap_z3/bottom_rs.png")
+            "imagery/qsc_sides/OSM.nolabel_z3/bottom_rs_txt.png")
 
 outfile = "imagery/3Dbox/box.png"
 
@@ -161,20 +162,30 @@ x = image_info(img1)$width
 y = image_info(img1)$height
 
 gif_file = gifski(png_files = png_fls,
-                  gif_file = "imagery/animated/box_anim.gif",
+                  gif_file = "imagery/animated/box_anim2.gif",
                   width = x * 0.25,
                   height = y * 0.25,
                   delay = 0.05)
 
-# clean up
-unlink(png_fls)
-unlink(list.files("imagery/healpix", full.names = TRUE))
 
+### static image logo
 # I can't get it running on Windows...
 # this has to be executed on a Linux machine ...
-# system(paste('sudo -kS 3Dbox pan=45 tilt=-35 pef=0 filter=point format="center"',
-#               paste0(infiles, collapse = " "), outfile),
-#        input = rstudioapi::askForPassword("sudo password"))
+outfile = "imagery/3Dbox/logo.png"
+system(paste('sudo -kS 3Dbox bgcolor="#ffffff00" pan=45 tilt=-45 pef=0 filter=point format="center"',
+              paste0(infiles, collapse = " "), outfile),
+       input = rstudioapi::askForPassword("sudo password"))
+
+box_mv = image_read(outfile)
+box_mv = image_trim(box_mv)
+
+wdth = 1.73*300
+hght = 2*300
+
+box_mv = image_resize(box_mv, paste0(wdth, "x", hght, "!"))
+
+image_write(box_mv, path = "imagery/3Dbox/logo_static.png")
+
 
 # system("sudo -kS bash 3Dbox_anim_pan",
 #        input = rstudioapi::askForPassword("sudo password"))
