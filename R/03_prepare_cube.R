@@ -64,7 +64,7 @@ qsc_sides_img_rs %>%
 left = image_read("imagery/qsc_sides/Esri.WorldImagery_z3/left_rs.png")
 top = image_read("imagery/qsc_sides/OpenTopoMap_z3/top_rs.png")
 
-front = image_read("imagery/qsc_sides/CartoDB.DarkMatter_z3/front_rs.png")
+front = image_read("imagery/qsc_sides/CartoDB.Positron_z3/front_rs.png")
 bottom = image_read("imagery/qsc_sides/OSM.nolabel_z3/bottom_rs.png")
 
 # draw "map" text to left tile
@@ -116,7 +116,7 @@ dev.off()
 #save manipulated images
 image_write(top, path = "imagery/qsc_sides/OpenTopoMap_z3/top_rs_txt.png")
 image_write(left, path = "imagery/qsc_sides/Esri.WorldImagery_z3/left_rs_txt.png")
-image_write(front, path = "imagery/qsc_sides/CartoDB.DarkMatter_z3/front_rs_txt.png")
+image_write(front, path = "imagery/qsc_sides/CartoDB.Positron_z3/front_rs_txt.png")
 image_write(bottom, path = "imagery/qsc_sides/OSM.nolabel_z3/bottom_rs_txt.png")
 
 
@@ -130,11 +130,11 @@ image_write(bottom, path = "imagery/qsc_sides/OSM.nolabel_z3/bottom_rs_txt.png")
 # see here for how to run IM bash scripts on Windows
 # http://im.snibgo.com/cygwin.htm#prebuilt
 
-infiles = c("imagery/qsc_sides/CartoDB.DarkMatter_z3/front_rs_txt.png",
+infiles = c("imagery/qsc_sides/CartoDB.Positron_z3/front_rs_txt.png",
             "imagery/qsc_sides/Esri.WorldImagery_z3/left_rs_txt.png",
             "imagery/qsc_sides/OpenTopoMap_z3/top_rs_txt.png",
             "imagery/qsc_sides/OpenStreetMap_z3/back_rs.png",
-            "imagery/qsc_sides/CartoDB.Positron_z3/right_rs.png",
+            "imagery/qsc_sides/CartoDB.DarkMatter_z3/right_rs.png",
             "imagery/qsc_sides/OSM.nolabel_z3/bottom_rs_txt.png")
 
 outfile = "imagery/3Dbox/box.png"
@@ -171,8 +171,8 @@ gif_file = gifski(png_files = png_fls,
 ### static image logo
 # I can't get it running on Windows...
 # this has to be executed on a Linux machine ...
-outfile = "imagery/3Dbox/logo.png"
-system(paste('sudo -kS 3Dbox bgcolor="#ffffff00" pan=45 tilt=-45 pef=0 filter=point format="center"',
+outfile = "imagery/3Dbox/logo_hex.png"
+system(paste('sudo -kS 3Dbox bgcolor="#ffffff00" pan=45 tilt=-35 pef=0 filter=point format="center"',
               paste0(infiles, collapse = " "), outfile),
        input = rstudioapi::askForPassword("sudo password"))
 
@@ -184,7 +184,7 @@ hght = 2*300
 
 box_mv = image_resize(box_mv, paste0(wdth, "x", hght, "!"))
 
-image_write(box_mv, path = "imagery/3Dbox/logo_static.png")
+image_write(box_mv, path = "imagery/3Dbox/logo_static_hex.png")
 
 
 # system("sudo -kS bash 3Dbox_anim_pan",
